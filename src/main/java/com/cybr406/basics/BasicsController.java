@@ -1,5 +1,6 @@
 package com.cybr406.basics;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
@@ -12,6 +13,9 @@ import java.util.stream.Collectors;
 @RestController
 public class BasicsController {
 
+    @Value("${app.environment}")
+    String environment;
+    
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.setValidator(new UserValidator());
@@ -42,6 +46,11 @@ public class BasicsController {
     @PostMapping("/register")
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
+    }
+    
+    @GetMapping("/env")
+    public String environment() {
+        return environment;
     }
 
 }
