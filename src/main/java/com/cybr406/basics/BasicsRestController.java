@@ -8,6 +8,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -16,8 +17,8 @@ public class BasicsRestController {
     @Value("${app.environment}")
     String environment;
     
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
+    @InitBinder("user")
+    public void initUserBinder(WebDataBinder binder) {
         binder.setValidator(new UserValidator());
     }
     
@@ -60,10 +61,20 @@ public class BasicsRestController {
 //        String result = output.trim();
 //        return result;
     }
-    
+
     @PostMapping("/register")
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/register/map")
+    public ResponseEntity<Map<String, Object>> createUser(@RequestBody Map<String, Object> notUser) {
+        return new ResponseEntity<>(notUser, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/todo")
+    public ResponseEntity<Todo> createTodo(@Valid @RequestBody Todo todo) {
+        return new ResponseEntity<>(todo, HttpStatus.CREATED);
     }
     
     @GetMapping("/env")
