@@ -1,5 +1,6 @@
 package com.cybr406.basics;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,9 @@ public class BasicsRestController {
 
     @Value("${app.environment}")
     String environment;
+
+    @Autowired
+    Greeter greeter;
     
     @InitBinder("user")
     public void initUserBinder(WebDataBinder binder) {
@@ -24,12 +28,8 @@ public class BasicsRestController {
     
     @GetMapping("/helloworld")
     public String helloWorld() {
-        return "Hello, world.";
-    }
-
-    @GetMapping("/greeting")
-    public String greeting(@RequestParam String name) {
-        return String.format("Hello, %s.", name);
+        System.out.println(greeter);
+        return greeter.greeting("world");
     }
 
     @GetMapping("/path/to/{name}")
